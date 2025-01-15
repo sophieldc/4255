@@ -2,7 +2,7 @@ version: '3.8'
 services:
   flask_app_db:
     build:
-      context: ../challenge1
+      context: ../
       dockerfile: Dockerfile
     container_name: flask_app_db
     ports:
@@ -16,7 +16,7 @@ services:
 
   flask_app_no_db:
     build:
-      context: ../challenge1
+      context: ../
       dockerfile: Dockerfile
     container_name: flask_app_no_db
     ports:

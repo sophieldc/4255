@@ -1,6 +1,5 @@
 import os
-from flask import Flask, request
-from pymongo import MongoClient
+from flask import Flask, request, jsonify
 from datetime import datetime   
 import socket
 
@@ -32,10 +31,14 @@ def flaskTest():
         for req in last_requests:
             responses += f"<li>{req['ip']} - {req['date']}</li>"
         responses += "</ul>"
-        return f"<h1>Hello from Flask (DB)</h1><p>Last 10 requests:</p>{responses}"
+        return f"<h1>Hello from Flask (DB)</h1><p>Your IP: {client_ip}</p><p>Last 10 requests:</p>{responses}"
 
     else:
         return f"<h1>Hello from Flask (NO DB)</h1><p>Your IP: {client_ip}</p><p>Current Date: {current_date}</p>"
+
+@app.route("/healthz")
+def health_check():
+    return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000,debug=True)       

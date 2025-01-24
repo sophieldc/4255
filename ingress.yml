@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-app-ingress
+  namespace: sledrich 
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: webnodb.sledrich.net4255.luxbulb.org # deployment webnodb
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: webnodb-service
+            port:
+              number: 5000
+  - host: webdb.sledrich.net4255.luxbulb.org # deployment webdb
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: webdb-service
+            port:
+              number: 5000

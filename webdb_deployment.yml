@@ -28,6 +28,12 @@ spec:
           limits:
             cpu: "200m"  # 1/5 CPU
             memory: "200Mi"  # 200 Mo
+        livenessProbe:             #le serveur web http couche 7
+          httpGet:                # probe HTTP car c’est une API Flask => Vérifie via httpGet que le serveur répond à /healthz
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 5  # Attendre 5s avant la première vérification
+          periodSeconds: 10       # Vérifier toutes les 10s
 ---
 apiVersion: v1
 kind: Service

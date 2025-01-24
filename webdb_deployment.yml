@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdb
+  namespace: sledrich
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webdb
+  template:
+    metadata:
+      labels:
+        app: webdb
+    spec:
+      containers:
+      - name: webdb
+        image: sophieledrich/challenge3_flask_app_db:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URI
+          value: "mongodb://mongodb-service:27017/"
+        resources:
+          requests:
+            cpu: "100m"  # 1/10 CPU
+            memory: "100Mi"  # 100 Mo
+          limits:
+            cpu: "200m"  # 1/5 CPU
+            memory: "200Mi"  # 200 Mo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webdb-service
+  namespace: sledrich
+spec:
+  selector:
+    app: webdb
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
+

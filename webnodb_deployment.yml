@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webnodb
+  namespace: sledrich
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webnodb
+  template:
+    metadata:
+      labels:
+        app: webnodb
+    spec:
+      containers:
+      - name: webnodb
+        image: sophieledrich/challenge3_flask_app_no_db:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: NO_DB
+          value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webnodb-service
+  namespace: sledrich
+spec:
+  selector:
+    app: webnodb
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
+

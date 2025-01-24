@@ -32,10 +32,26 @@ def flaskTest():
         for req in last_requests:
             responses += f"<li>{req['ip']} - {req['date']}</li>"
         responses += "</ul>"
-        return f"<h1>Hello from Flask (DB)</h1><p>Last 10 requests:</p>{responses}"
+        return f"""
+        <h1>Bienvenue sur ma page Flask DB pour 4255</h1>
+        <p>Nom : Sophie Ledrich</p>
+        <p>Projet : Challenge 6</p>
+        <p>Version : V3</p>
+        <p>Hostname : {client_ip}</p>
+        <p>Date actuelle : {current_date}</p>
+        <h2>Dernières connexions :</h2>
+        <ul>{responses}</ul> """
 
     else:
-        return f"<h1>Hello from Flask (NO DB)</h1><p>Your IP: {client_ip}</p><p>Current Date: {current_date}</p>"
+        return f"<h1>Hello from Flask (NO DB)</h1><p>Your IP: {client_ip}</p><p>Current Date: {current_date}</p>
+        <h1>Bienvenue sur ma page Flask NO DB pour 4255</h1>
+        <p>Nom : Sophie Ledrich</p>
+        <p>Projet : Challenge 6</p>
+        <p>Version : V3</p>
+        <p>Hostname : {client_ip}</p>
+        <p>Date actuelle : {current_date}</p>
+        <h2>Dernières connexions :</h2>
+        <ul>{responses}</ul> """
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000,debug=True)       

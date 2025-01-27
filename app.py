@@ -10,7 +10,8 @@ NO_DB = os.getenv("NO_DB", "false").lower() == "true"
 
 if not NO_DB:
     from pymongo import MongoClient
-    mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+    #mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+    mongo_uri = os.getenv('MONGO_URI', 'mongodb://mongodb-0.mongodb.sledrich.svc.cluster.local:27017')
     client = MongoClient(mongo_uri)
     db = client['flask_db']
     collection = db['requests']

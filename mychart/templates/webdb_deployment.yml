@@ -20,7 +20,8 @@ spec:
         - containerPort: 5000
         env:
         - name: MONGO_URI
-          value: "mongodb://mongodb-service:27017/"
+          #value: "mongodb://mongodb-service:27017/"
+          value: "mongodb://mongodb-0.mongodb.sledrich.svc.cluster.local:27017"
         resources:
           requests:
             cpu: "100m"  # 1/10 CPU
@@ -30,10 +31,10 @@ spec:
             memory: "200Mi"  # 200 Mo
         livenessProbe:             #le serveur web http couche 7
           httpGet:                # probe HTTP car c’est une API Flask => Vérifie via httpGet que le serveur répond à /healthz
-            path: /healthz
+            path: /
             port: 5000
-          initialDelaySeconds: 5  # Attendre 5s avant la première vérification
-          periodSeconds: 10       # Vérifier toutes les 10s
+          initialDelaySeconds: 60  # Attendre 5s avant la première vérification
+          periodSeconds: 120       # Vérifier toutes les 10s
 ---
 apiVersion: v1
 kind: Service

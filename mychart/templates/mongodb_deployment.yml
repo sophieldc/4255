@@ -1,9 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet # StatefulSet à la place de Deployment
 metadata:
   name: mongodb
   namespace: sledrich
 spec:
+  serviceName: mongodb # Nom du service qui expose la bdd
   replicas: 1
   selector:
     matchLabels:
@@ -24,19 +25,23 @@ spec:
         resources:
           requests:
             cpu: "100m"
-            memory: "100Mi"
+            memory: "200Mi"
           limits:
             cpu: "200m"
-            memory: "200Mi"
+            memory: "400Mi"
         livenessProbe:              #la database MongoDB encapsulé couche 4 
           tcpSocket:               # probe TCP car MongoDB écoute sur le port 27017 => on vérifie l'ouverture du port avec tcpSocket
             port: 27017
-          initialDelaySeconds: 5  # Attendre 5s avant la première vérification
-          periodSeconds: 10        # Vérifier toutes les 10s
-      volumes:
-      - name: mongodb-data
-        emptyDir: {}
-
+          initialDelaySeconds: 120  # Attendre 60s avant la première vérification
+          periodSeconds: 240        # Vérifier toutes les 120s
+  volumeClaimTemplates:
+    - metadata:
+        name: mongodb-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 300Mi    #Use a Persistant Volume to store the database content, Stockage ressource : 0.1 Go
 ---
 apiVersion: v1
 kind: Service
@@ -46,8 +51,11 @@ metadata:
 spec:
   selector:
     app: mongodb
+  clusterIP: None
   ports:
     - protocol: TCP
       port: 27017
       targetPort: 27017
-  type: ClusterIP
+
+
+

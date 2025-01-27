@@ -1,0 +1,21 @@
+replicaCount: 1
+
+image:
+  repository: sophieledrich/challenge3_flask_app_no_db
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5000
+
+ingress:
+  enabled: true
+  hostname_webnodb: webnodb.sledrich.net4255.luxbulb.org
+  hostname_webdb: webdb.sledrich.net4255.luxbulb.org
+  className: "nginx"
+
+mongodb:
+  image: mongo
+  tag: latest
+  port: 27017
